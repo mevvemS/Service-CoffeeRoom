@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>dotnet-ServiceСoffeeRoom-4bb5a5b4-5676-4c75-a23e-c865708ce7ff</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="MigrationManager.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="linq2db.AspNet" Version="5.4.1" />
+    <PackageReference Include="linq2db.PostgreSQL" Version="6.0.0-preview.1" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.0" />
+    <PackageReference Include="Telegram.Bot" Version="19.0.0" />
+    <PackageReference Include="Telegram.Bots.Extensions.Polling" Version="5.9.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ServiceCoffeeRoom.Core\ServiceCoffeeRoom.Core.csproj" />
+    <ProjectReference Include="..\ServiceCoffeeRoom.Repositories\ServiceCoffeeRoom.Repositories.csproj" />
+    <ProjectReference Include="..\ServiceCoffeeRoom.Services\ServiceCoffeeRoom.Services.csproj" />
+  </ItemGroup>
+</Project>
