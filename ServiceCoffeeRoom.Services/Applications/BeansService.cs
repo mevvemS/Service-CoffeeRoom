@@ -16,18 +16,22 @@ namespace ServiceCoffeeRoom.Services.Applications
                 <= 0 => new(beansInfo.Mark, beansInfo.Price),
                 > 0 => new(beansInfo.Mark, beansInfo.Price, beansInfo.Weight)
             };
+
             var result = await beansRepository.AddAsync(beans, cancellationToken);
 
             CoffeeMachine coffeeMachine = (await coffeeMachineRepository.GetAllAsync(cancellationToken)).FirstOrDefault()
                 ?? throw new EntiyNotFoundExeption("Only", nameof(CoffeeMachine));
-            if (coffeeMachine.BeansId.Equals(Guid.Empty))
-                coffeeMachine.SetBeans(beans);
-            else
+            if (!coffeeMachine.BeansId.Equals(Guid.Empty))
             {
-                var currentBeans = await beansRepository.GetByIdAsync(coffeeMachine.BeansId, cancellationToken);
-                if (currentBeans is null || currentBeans.Status is false)
-                    coffeeMachine.SetBeans(beans);
+                Beans? currentBeans = await beansRepository.GetByIdAsync(coffeeMachine.BeansId, cancellationToken);
+                if (currentBeans is not null)
+                {
+                    currentBeans.Status = false;
+                    await beansRepository.UpdateAsync(currentBeans.Prototype(), cancellationToken);
+                }
             }
+
+            coffeeMachine.SetBeans(beans);
             _ = await coffeeMachineRepository.UpdateAsync(coffeeMachine.Prototype(), cancellationToken);
 
             if (result is not null)
